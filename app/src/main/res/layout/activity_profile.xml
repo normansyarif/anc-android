@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProfileActivity"
+    android:background="#f5f5f5">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"/>
+
+    <LinearLayout
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="10dp"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onProfileClicked">
+
+            <LinearLayout
+                android:layout_weight="0.15"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:elevation="12dp"
+                    android:id="@+id/view2"
+                    app:cardCornerRadius="20dp"
+                    android:layout_centerHorizontal="true">
+                    <ImageView
+                        android:layout_height="40dp"
+                        android:layout_width="match_parent"
+                        android:id="@+id/imageView1"
+                        android:src="@drawable/ic_person_blue"
+                        android:scaleType="centerCrop"/>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_weight="0.85"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textColor="#000"
+                    android:paddingTop="10dp"
+                    android:text="Ubah foto profil"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:padding="10dp"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_weight="0.15"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_credit_card_black_24dp"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_weight="0.85"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/et_fullname"
+                    android:paddingTop="3dp"
+                    android:background="@null"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:hint="Nama Lengkap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="10dp"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_weight="0.15"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_date"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_weight="0.85"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/birthday"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:paddingTop="3dp"
+                    android:background="@null"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:hint="Tanggal Lahir"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:padding="10dp"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_weight="0.15"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_pregnant_2"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_weight="0.85"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/pregnant_date"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:paddingTop="3dp"
+                    android:background="@null"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:hint="Usia Kehamilan (minggu)"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:background="#fff"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onLogoutClicked">
+
+        <TextView
+            android:textColor="#000"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

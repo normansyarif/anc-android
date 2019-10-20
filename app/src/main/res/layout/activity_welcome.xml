@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".WelcomeActivity">
+
+    <LinearLayout
+        android:id="@+id/custom_action_bar"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingRight="10dp"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6">
+            <TextView
+                android:id="@+id/appName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="ANC"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:onClick="toMain"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.4"
+            android:gravity="end">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_apps_black_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="3dp"
+                android:paddingTop="3dp"
+                android:text="Menu"
+                android:textColor="#fff" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:paddingTop="30dp"
+                android:paddingBottom="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/unja_splash"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp" />
+
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/idi_welcome"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:textColor="#000"
+                android:textStyle="bold|italic"
+                android:textSize="20sp"
+                android:layout_gravity="center_horizontal"
+                android:text="Antenatal Care"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_gravity="end"
+                android:textColor="#000"
+                android:padding="20dp"
+                android:text="Antenatal care (ANC) adalah pengawasan sebelum persalinan, terutama ditunjukan pada pertumbuhan dan perkembangan janin dalam rahim. Antenatal care juga merupakan cara penting untuk memonitoring dan mendukung kesehatan ibu hamil, mendeteksi ibu dengan kehamilan normal,  mengoptimalkan kesehatan mental dan fisik ibu hamil, sehingga mampu melindungi proses kehamilan, persalinan, setelah persalinan, penanganan perdarahan setelah keguguran dan pelayanan KB setelah persalinan, serta komplikasi yang terkait dengan kehamilan, persalinan, nifas dan KB setelah persalinan."
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:paddingBottom="50dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:onClick="tujuanClicked"
+                    android:textAllCaps="false"
+                    android:textColor="#fff"
+                    android:background="@color/colorPrimary"
+                    android:text="Tujuan ANC"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"/>
+
+                <Button
+                    android:onClick="tempatClicked"
+                    android:textAllCaps="false"
+                    android:textColor="#fff"
+                    android:background="@color/colorPrimary"
+                    android:text="Tempat &amp; Tenaga untuk Melakukan ANC"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"/>
+
+                <Button
+                    android:onClick="jadwalClicked"
+                    android:textAllCaps="false"
+                    android:textColor="#fff"
+                    android:background="@color/colorPrimary"
+                    android:text="Jadwal Kunjungan"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
