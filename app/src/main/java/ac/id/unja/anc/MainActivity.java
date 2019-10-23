@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         token = Preferences.getInstance().getToken();
         Glide.with(this).load(routes.imgProfile + token)
-                .thumbnail(Glide.with(this).load(R.drawable.miku))
+                .thumbnail(Glide.with(this).load(R.drawable.ic_broken_image))
                 .into(imageView1);
 
         tvFullname.setText(fullname);

@@ -83,7 +83,7 @@
                                 android:src="@drawable/ic_date" />
 
                             <TextView
-                                android:id="@+id/createdAt"
+                                android:id="@+id/created_at"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="01 January 1990"
@@ -100,7 +100,7 @@
                     android:paddingTop="15dp"
                     android:paddingBottom="10dp"
                     android:textStyle="bold"
-                    android:id="@+id/title"
+                    android:id="@+id/judul"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -112,7 +112,7 @@
                 <TextView
                     android:paddingTop="5dp"
                     android:paddingBottom="10dp"
-                    android:id="@+id/content"
+                    android:id="@+id/konten"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -129,22 +129,25 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:padding="5dp"
-                        android:src="@drawable/miku"
+                        android:id="@+id/foto1"
                         android:layout_width="50dp"
-                        android:layout_height="50dp" />
+                        android:layout_height="50dp"
+                        android:padding="5dp"
+                        android:src="@drawable/miku" />
 
                     <ImageView
-                        android:padding="5dp"
-                        android:src="@drawable/miku"
+                        android:id="@+id/foto2"
                         android:layout_width="50dp"
-                        android:layout_height="50dp" />
+                        android:layout_height="50dp"
+                        android:padding="5dp"
+                        android:src="@drawable/miku" />
 
                     <ImageView
-                        android:padding="5dp"
-                        android:src="@drawable/miku"
+                        android:id="@+id/foto3"
                         android:layout_width="50dp"
-                        android:layout_height="50dp" />
+                        android:layout_height="50dp"
+                        android:padding="5dp"
+                        android:src="@drawable/miku" />
 
                 </LinearLayout>
 
@@ -175,96 +178,12 @@
 
                 </LinearLayout>
 
-                <!--Second container-->
-                <LinearLayout
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:layout_height="match_parent" />
 
-                    <!--Top container-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="horizontal">
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginRight="10dp"
-                            android:elevation="12dp"
-                            app:cardCornerRadius="25dp">
-
-                            <ImageView
-                                android:id="@+id/img1"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/miku" />
-                        </android.support.v7.widget.CardView>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/response_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Name"
-                                android:textColor="#4c4c4c" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:layout_width="15dp"
-                                    android:layout_height="15dp"
-                                    android:layout_marginRight="3dp"
-                                    android:src="@drawable/ic_date" />
-
-                                <TextView
-                                    android:id="@+id/createdAt1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="01 January 1990"
-                                    android:textColor="#9e9e9e"
-                                    android:textSize="11sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:paddingTop="5dp"
-                        android:paddingBottom="10dp"
-                        android:id="@+id/response1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:lineSpacingMultiplier="1.3"
-                        android:text="Respon 1"
-                        android:textColor="#757575" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_margin="10dp"
-                        android:background="@color/lightgray" />
-
-                </LinearLayout>
+                <!--Second container-->
 
             </LinearLayout>
 

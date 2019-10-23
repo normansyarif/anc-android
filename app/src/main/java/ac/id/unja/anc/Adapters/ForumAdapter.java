@@ -101,7 +101,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
 
-        TextView title, createdAt, userName, responseCount;
+        TextView id, title, createdAt, userName, responseCount;
         ImageView imageView;
         OnItemClickListener onItemClickListener;
 

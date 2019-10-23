@@ -161,17 +161,17 @@ public class ForumActivity extends AppCompatActivity implements SwipeRefreshLayo
         adapter.setOnItemClickListener(new ForumAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-//                Intent intent = new Intent(ForumActivity.this, MainActivity.class);
 //
-//                Forum article = allArticles.get(position);
+                  Forum article = allArticles.get(position);
 
 //                intent.putExtra("url", article.getLink());
 //                intent.putExtra("title", article.getTitle().getRendered());
 //                intent.putExtra("author", article.getEmbedded().getAuthor().get(0).getName());
 //                intent.putExtra("content", article.getContent().getRendered());
 //
-//                startActivity(intent);
-                Toast.makeText(ForumActivity.this, "clicked " + position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ForumActivity.this, ForumItemActivity.class);
+                intent.putExtra("id", article.getId().toString());
+                startActivity(intent);
             }
         });
     }
