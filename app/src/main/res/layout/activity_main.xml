@@ -120,7 +120,6 @@
                     android:id="@+id/name2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Usia kehamilan 10 minggu"
                     android:textColor="#fff"
                     android:textSize="12sp" />
 

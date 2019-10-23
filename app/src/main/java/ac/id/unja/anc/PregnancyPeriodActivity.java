@@ -11,21 +11,34 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import ac.id.unja.anc.Volley.Preferences;
+import ac.id.unja.anc.Volley.Routes;
+import ac.id.unja.anc.Volley.VolleyAPI;
+import ac.id.unja.anc.Volley.VolleyResponseListener;
+
 import static ac.id.unja.anc.Utils.weekToDate;
 
 public class PregnancyPeriodActivity extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
+    private VolleyAPI api = new VolleyAPI();
+    private Routes routes = new Routes();
+    HashMap<String, String> user;
+
     Button openDialog;
     int periode = 0;
-
-    // Mock data
-    int userId = 1;
-    //////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pregnancy_period);
 
+        user = (HashMap<String, String>) getIntent().getSerializableExtra("user");
         openDialog = findViewById(R.id.open_dialog);
         openDialog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,21 +84,46 @@ public class PregnancyPeriodActivity extends AppCompatActivity implements Number
     }
 
     public void mulaiBtnClicked(View v) {
-        if(mockUpdatePeriode()) {
-            // Berhasil update usia kehamilan, masuk ke activity welcome
-            Intent intent = new Intent(PregnancyPeriodActivity.this, WelcomeActivity.class);
-            startActivity(intent);
-            finish();
-        }else{
-            // Gagal update usia kehamilan
-            Toast.makeText(this, "Update error", Toast.LENGTH_LONG).show();
-        }
+        user.put("awal_hamil", weekToDate(periode));
+
+        api.postDataVolley(user, routes.register, PregnancyPeriodActivity.this, new VolleyResponseListener() {
+
+            @Override
+            public void onResponse(String response) {
+                responseHandler(response);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                api.handleError(error.toString(), PregnancyPeriodActivity.this);
+            }
+
+        });
     }
 
-    // Mock methods
-    public boolean mockUpdatePeriode() {
-        Toast.makeText(this, "UPDATE\nawal_hamil: " + weekToDate(periode) + " where userId: " + userId, Toast.LENGTH_LONG).show();
-        return true;
+    public void responseHandler(String response){
+        try {
+            JSONObject result = new JSONObject(response);
+            String status = result.getString("status");
+
+            if(status.equals("0")) {
+                Toast.makeText(PregnancyPeriodActivity.this, "Terjadi Kesalahan. Mohon Coba beberapa saat lagi.", Toast.LENGTH_SHORT).show();
+            } else if(status.equals("2")) {
+                Toast.makeText(PregnancyPeriodActivity.this, "Username tidak tersedia", Toast.LENGTH_SHORT).show();
+            } else {
+                String token = result.getString("token");
+                JSONObject user = new JSONObject(result.getString("user"));
+                Preferences.getInstance().writeAuth("token", token);
+                Preferences.getInstance().setUser(user);
+
+                Intent intent = new Intent(PregnancyPeriodActivity.this, WelcomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            api.handleError(e + response, PregnancyPeriodActivity.this);
+        }
     }
-    ////////////////////
 }

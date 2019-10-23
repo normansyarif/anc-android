@@ -40,4 +40,6 @@ dependencies {
     //Time Formatter
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 
+
+    implementation 'com.android.volley:volley:1.1.1'
 }

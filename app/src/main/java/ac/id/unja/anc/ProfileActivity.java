@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,35 +26,54 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+
+import ac.id.unja.anc.Volley.Preferences;
+import ac.id.unja.anc.Volley.Routes;
+import ac.id.unja.anc.Volley.VolleyAPI;
+import ac.id.unja.anc.Volley.VolleyResponseListener;
 
 import static ac.id.unja.anc.Utils.*;
 
 public class ProfileActivity extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
+    private VolleyAPI api = new VolleyAPI();
+    private Routes routes = new Routes();
     final Calendar myCalendar = Calendar.getInstance();
+    Bitmap bitmap;
+    String foto = "";
     EditText edittext, edittext2, etfullname;
     ImageView profile;
+    boolean btnSaveActive = true;
     private final static int GALLERY_REQUEST_CODE = 12345;
 
-    // Mock data
-    int userId = 1;
-    String fullname = "Hatsune Miku";
-    String ttl = "2019-08-08";
-    long periode = dateToWeek("2019-09-12");
+    String token, fullname, ttl;
+    long periode;
     int profilePicture = R.drawable.miku;
-    //////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        token = Preferences.getInstance().getToken();
         etfullname = findViewById(R.id.et_fullname);
         edittext = findViewById(R.id.birthday);
         edittext2 = findViewById(R.id.pregnant_date);
         profile = findViewById(R.id.imageView1);
+
+        Glide.with(this).load(routes.imgProfile + token)
+                .thumbnail(Glide.with(this).load(R.drawable.miku))
+                .into(profile);
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         toolbar.setElevation(10);
@@ -62,10 +82,15 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        etfullname.setText(fullname);
-        edittext.setText(ttl);
-        edittext2.setText(String.valueOf(periode));
+        SharedPreferences user = Preferences.getInstance().getUser();
+        etfullname.setText(user.getString("name", null));
+        edittext.setText(user.getString("tanggal_lahir", null));
         profile.setImageResource(profilePicture);
+
+        String tipe = user.getString("tipe", "0");
+        if(tipe.equals("1")) {
+            edittext2.setText(String.valueOf(dateToWeek(user.getString("awal_hamil", null))));
+        }
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -138,19 +163,12 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
     }
 
     public void onLogoutClicked(View v) {
-        if(mockLogout()) {
-            // Berhasil logout, hapus data lokal, masuk ke activity login
-            destroyLocalData();
-
+            Preferences.getInstance().writeAuth("token", null);
             Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-        }else{
-            // Gagal logout
-            Toast.makeText(this, "Gagal logout", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void onProfileClicked(View v) {
@@ -164,24 +182,24 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Result code is RESULT_OK only if the user selects an Image
         if (resultCode == Activity.RESULT_OK)
             switch (requestCode){
                 case GALLERY_REQUEST_CODE:
-                    //data.getData return the content URI for the selected Image
                     Uri selectedImage = data.getData();
                     String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                    // Get the cursor
                     Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                    // Move to first row
+
                     cursor.moveToFirst();
-                    //Get the column index of MediaStore.Images.Media.DATA
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    //Gets the String value in the column
-                    String imgDecodableString = cursor.getString(columnIndex);
                     cursor.close();
-                    // Set the Image in ImageView after decoding the String
-                    profile.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString));
+
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        foto   = Utils.getStringImage(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    profile.setImageURI(selectedImage);
                     break;
             }
     }
@@ -193,11 +211,50 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
                 finish();
                 return true;
             case R.id.action_save_profile:
-                if(mockSaveData()) {
-                    // Berhasil edit profil
-                }else{
-                    // Gagal edit profil
-                    Toast.makeText(this, "Edit profil gagal", Toast.LENGTH_SHORT).show();
+                if(btnSaveActive){
+                    btnSaveActive = false;
+                    String fullname = etfullname.getText().toString();
+                    String birthday = edittext.getText().toString();
+                    int hamil = Integer.parseInt(edittext2.getText().toString());
+                    String usiaHamil = weekToDate(hamil);
+
+                    HashMap<String, String> user = new HashMap<>();
+                    user.put("token", token);
+                    user.put("name", fullname);
+                    user.put("awal_hamil", usiaHamil);
+                    user.put("tanggal_lahir", birthday);
+                    user.put("foto", foto);
+
+                    api.postDataVolley(user, routes.editProfile, ProfileActivity.this, new VolleyResponseListener() {
+
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject result = new JSONObject(response);
+                                String status = result.getString("status");
+
+                                if(status.equals("0")) {
+                                    Toast.makeText(ProfileActivity.this, "Terjadi Kesalahan. Coba lagi nanti.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    JSONObject user = new JSONObject(result.getString("user"));
+                                    Preferences.getInstance().setUser(user);
+                                    Toast.makeText(ProfileActivity.this, "Berhasil mengubah data.", Toast.LENGTH_SHORT).show();
+                                }
+
+                                btnSaveActive = true;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                api.handleError(e + response, ProfileActivity.this);
+                            }
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            api.handleError(error.toString(), ProfileActivity.this);
+                            btnSaveActive = true;
+                        }
+
+                    });
                 }
 
             default:
@@ -217,23 +274,4 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
         Log.i("value is",""+newVal);
     }
 
-    // Mock methods
-    public boolean mockSaveData() {
-        String fullname = etfullname.getText().toString();
-        String birthday = edittext.getText().toString();
-        int hamil = Integer.parseInt(edittext2.getText().toString());
-        Toast.makeText(this, "POST\nfullname: " + fullname + "\nbirthday: " + birthday + "\nawal_hamil: " + weekToDate(hamil), Toast.LENGTH_LONG).show();
-        return true;
-    }
-
-    public boolean mockLogout() {
-        Toast.makeText(this, "Logout userId: " + userId, Toast.LENGTH_SHORT).show();
-        return true;
-    }
-
-    public boolean destroyLocalData() {
-        // Hapus data lokal
-        return true;
-    }
-    /////////////////////////////
 }

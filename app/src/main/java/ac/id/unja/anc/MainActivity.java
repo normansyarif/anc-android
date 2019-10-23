@@ -1,6 +1,7 @@
 package ac.id.unja.anc;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -9,15 +10,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import ac.id.unja.anc.Volley.Preferences;
+import ac.id.unja.anc.Volley.Routes;
+
 import static ac.id.unja.anc.Utils.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Mock data
-    String fullname = "Hatsune Miku";
-    long usiaHamil = dateToWeek("2019-09-12");
+    private Routes routes = new Routes();
+
+    String fullname, token;
+    long usiaHamil;
     int profileImage = R.drawable.miku;
-    //////////////////////////
+
+    TextView tvFullname, tvUsia;
+    ImageView imageView1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +43,9 @@ public class MainActivity extends AppCompatActivity {
         CardView cardFaq = findViewById(R.id.card_faq);
         CardView cardSerba = findViewById(R.id.card_misc);
         LinearLayout profile = findViewById(R.id.main_profile);
-        ImageView imageView1 = findViewById(R.id.imageView1);
-        TextView tvFullname = findViewById(R.id.name1);
-        TextView tvUsia = findViewById(R.id.name2);
-
-        imageView1.setImageResource(profileImage);
-        tvFullname.setText(fullname);
-        tvUsia.setText("Usia kehamilaln " + usiaHamil + " minggu");
+        imageView1 = findViewById(R.id.imageView1);
+        tvFullname = findViewById(R.id.name1);
+        tvUsia = findViewById(R.id.name2);
 
         cardConsult.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,11 +95,37 @@ public class MainActivity extends AppCompatActivity {
                 openActivity(ProfileActivity.class);
             }
         });
+
+        setData();
+    }
+
+    public void setData(){
+        SharedPreferences user = Preferences.getInstance().getUser();
+        fullname = user.getString("name", null);
+
+        token = Preferences.getInstance().getToken();
+        Glide.with(this).load(routes.imgProfile + token)
+                .thumbnail(Glide.with(this).load(R.drawable.miku))
+                .into(imageView1);
+
+        tvFullname.setText(fullname);
+
+        String tipe = user.getString("tipe", "0");
+        if(tipe.equals("1")){
+            usiaHamil = dateToWeek(user.getString("awal_hamil", null));
+            tvUsia.setText("Usia kehamilaln " + usiaHamil + " minggu");
+        }
     }
 
     private void openActivity(Class<?> cls) {
         Intent intent = new Intent(MainActivity.this, cls);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setData();
     }
 }
