@@ -22,11 +22,16 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
+import ac.id.unja.anc.ForumItemActivity;
 import ac.id.unja.anc.Models.Forum;
 import ac.id.unja.anc.R;
 import ac.id.unja.anc.Utils;
+import ac.id.unja.anc.Volley.Routes;
+import ac.id.unja.anc.Volley.VolleyAPI;
 
 public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.MyViewHolder>{
+    private VolleyAPI api = new VolleyAPI();
+    private Routes routes = new Routes();
     private List<Forum> articles;
     private Context context;
     private OnItemClickListener onItemClickListener;
@@ -84,6 +89,10 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.MyViewHolder
         holder.responseCount.setText(String.format("%d tanggapan", model.getResponseCount()));
         holder.createdAt.setText(Utils.DateFormat(model.getCreatedAt()));
 
+        Context context = holder.imageView.getContext();
+        Glide.with(context).load(routes.imgProfile + model.getToken())
+                .thumbnail(Glide.with(context).load(R.drawable.ic_broken_image))
+                .into(holder.imageView);
     }
 
     @Override

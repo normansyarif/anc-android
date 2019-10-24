@@ -3,6 +3,7 @@ package ac.id.unja.anc;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +50,7 @@ import static ac.id.unja.anc.Utils.*;
 public class ProfileActivity extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
     private VolleyAPI api = new VolleyAPI();
     private Routes routes = new Routes();
+    ProgressDialog progress;
     final Calendar myCalendar = Calendar.getInstance();
     Bitmap bitmap;
     String foto = "";
@@ -72,7 +75,9 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
         profile = findViewById(R.id.imageView1);
 
         Glide.with(this).load(routes.imgProfile + token)
-                .thumbnail(Glide.with(this).load(R.drawable.miku))
+                .thumbnail(Glide.with(this).load(R.drawable.ic_broken_image))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(profile);
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
@@ -124,6 +129,12 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
                 show();
             }
         });
+        initLoading();
+    }
+
+    public void initLoading(){
+        progress = new ProgressDialog(this);
+        progress.setMessage("Loading...");
     }
 
     private void updateLabel() {
@@ -213,6 +224,7 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
             case R.id.action_save_profile:
                 if(btnSaveActive){
                     btnSaveActive = false;
+                    progress.show();
                     String fullname = etfullname.getText().toString();
                     String birthday = edittext.getText().toString();
                     int hamil = Integer.parseInt(edittext2.getText().toString());
@@ -242,6 +254,7 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
                                 }
 
                                 btnSaveActive = true;
+                                progress.dismiss();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 api.handleError(e + response, ProfileActivity.this);
@@ -252,6 +265,7 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
                         public void onErrorResponse(VolleyError error) {
                             api.handleError(error.toString(), ProfileActivity.this);
                             btnSaveActive = true;
+                            progress.dismiss();
                         }
 
                     });

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import ac.id.unja.anc.Volley.Preferences;
 import ac.id.unja.anc.Volley.Routes;
@@ -106,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
         token = Preferences.getInstance().getToken();
         Glide.with(this).load(routes.imgProfile + token)
                 .thumbnail(Glide.with(this).load(R.drawable.ic_broken_image))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(imageView1);
 
         tvFullname.setText(fullname);
@@ -113,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         String tipe = user.getString("tipe", "0");
         if(tipe.equals("1")){
             usiaHamil = dateToWeek(user.getString("awal_hamil", null));
-            tvUsia.setText("Usia kehamilaln " + usiaHamil + " minggu");
+            tvUsia.setText("Usia kehamilan " + usiaHamil + " minggu");
         }
     }
 

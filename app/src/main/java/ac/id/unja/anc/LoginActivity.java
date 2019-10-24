@@ -1,5 +1,7 @@
 package ac.id.unja.anc;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +27,7 @@ import ac.id.unja.anc.Volley.VolleyResponseListener;
 public class LoginActivity extends AppCompatActivity {
     private VolleyAPI api = new VolleyAPI();
     private Routes routes = new Routes();
+    ProgressDialog progress;
     EditText etUsername, etPass;
     String token;
 
@@ -36,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
         etUsername = findViewById(R.id.et_username);
         etPass = findViewById(R.id.et_pass);
+        initLoading();
     }
 
     @Override
@@ -50,7 +54,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    public void initLoading(){
+        progress = new ProgressDialog(this);
+        progress.setMessage("Loading...");
+    }
+
     public void loginBtnClicked(View v) {
+        progress.show();
         HashMap<String, String> user = new HashMap<>();
         user.put("username", etUsername.getText().toString());
         user.put("password", etPass.getText().toString());
@@ -59,6 +69,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
+                progress.dismiss();
+
                 try {
                     JSONObject result = new JSONObject(response);
                     String token = result.getString("token");
@@ -83,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 api.handleError(error.toString(), LoginActivity.this);
             }
 

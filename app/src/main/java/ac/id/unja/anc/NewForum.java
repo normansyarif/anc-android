@@ -1,6 +1,7 @@
 package ac.id.unja.anc;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -34,6 +35,7 @@ import ac.id.unja.anc.Volley.VolleyResponseListener;
 public class NewForum extends AppCompatActivity {
     private VolleyAPI api = new VolleyAPI();
     private Routes routes = new Routes();
+    ProgressDialog progress;
     private boolean btnAdd = true;
     Bitmap bitmap;
     String token;
@@ -59,6 +61,12 @@ public class NewForum extends AppCompatActivity {
         forumTitle = findViewById(R.id.forumTitle);
         forumContent = findViewById(R.id.forumContent);
         btnListener();
+        initLoading();
+    }
+
+    public void initLoading(){
+        progress = new ProgressDialog(this);
+        progress.setMessage("Loading...");
     }
 
     @Override
@@ -70,6 +78,7 @@ public class NewForum extends AppCompatActivity {
             case R.id.action_add_forum:
                 if(btnAdd){
                     btnAdd = false;
+                    progress.show();
                     String judul = forumTitle.getText().toString();
                     String konten = forumContent.getText().toString();
 
@@ -85,7 +94,6 @@ public class NewForum extends AppCompatActivity {
 
                         @Override
                         public void onResponse(String response) {
-                            btnAdd = true;
                             try {
                                 JSONObject result = new JSONObject(response);
                                 String status = result.getString("status");
@@ -99,15 +107,18 @@ public class NewForum extends AppCompatActivity {
                                 }
 
                             } catch (JSONException e) {
-                                btnAdd = true;
                                 e.printStackTrace();
                                 api.handleError(e + response, NewForum.this);
                             }
+
+                            btnAdd = true;
+                            progress.dismiss();
                         }
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             btnAdd = true;
+                            progress.dismiss();
                             api.handleError(error.toString(), NewForum.this);
                         }
 
