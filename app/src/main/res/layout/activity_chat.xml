@@ -13,13 +13,11 @@
         android:layout_height="match_parent"
         android:layout_weight="0.9">
 
-        <LinearLayout
-            android:id="@+id/parentChat"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="vertical"
-            android:padding="10dp"/>
+            android:padding="10dp" />
     </ScrollView>
 
     <ImageView
@@ -40,7 +38,7 @@
         android:padding="9dp">
 
         <EditText
-            android:id="@+id/msg"
+            android:id="@+id/msgInput"
             android:layout_width="275dp"
             android:layout_height="match_parent"
             android:background="#FFF"
@@ -63,7 +61,16 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded"
             android:padding="7dp"
+            android:visibility="visible"
             app:srcCompat="@drawable/ic_send" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone" />
 
     </LinearLayout>
 

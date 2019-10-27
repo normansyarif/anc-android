@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -12,12 +13,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ac.id.unja.anc.R;
+import ac.id.unja.anc.Volley.Routes;
+import ac.id.unja.anc.Volley.VolleyAPI;
 
 public class ChatAdapter {
+
+    private VolleyAPI api = new VolleyAPI();
+    private Routes routes = new Routes();
     Context context;
     Activity activity;
 
@@ -26,22 +35,27 @@ public class ChatAdapter {
         this.activity = activity;
     }
 
-    public void addUserChat(String img, Bitmap bitmap){
-        TextView textViewMsg = activity.findViewById(R.id.msg);
-        String msg = textViewMsg.getText().toString();
-        generateLayout(Gravity.RIGHT, R.drawable.textviewround_green, msg, img, bitmap);
-        textViewMsg.setText("");
+    public void addUserChatDB(String id, String msg, String time){
+        generateLayout(Gravity.RIGHT, R.drawable.textviewround_green, msg, time, id, null, true);
     }
 
-    public void addDoctorChat(String msg, String img, Bitmap bitmap){
-        generateLayout(Gravity.LEFT, R.drawable.textviewround, msg, img, bitmap);
+    public void addDoctorChatDB(String id, String msg, String time){
+        generateLayout(Gravity.LEFT, R.drawable.textviewround, msg, time, id, null, true);
     }
 
-    public void generateLayout(int gravity, int background, String msg, String img, Bitmap bitmap){
+    public void addUserChat(String img, String msg, String time, Bitmap bitmap){
+        generateLayout(Gravity.RIGHT, R.drawable.textviewround_green, msg, time, img, bitmap, false);
+    }
+
+    public void addDoctorChat(String img, String msg, String time, Bitmap bitmap){
+        generateLayout(Gravity.LEFT, R.drawable.textviewround, msg, time, img, bitmap, false);
+    }
+
+    public void generateLayout(int gravity, int background, String msg, String time, String img, Bitmap bitmap, boolean db){
 
         // Init Layout Parent
 
-        LinearLayout root = activity.findViewById(R.id.parentChat);
+        //LinearLayout root = activity.findViewById(R.id.parentChat);
         LinearLayout newChat = new LinearLayout(context);
         newChat.setBackgroundResource(background);
 
@@ -55,13 +69,24 @@ public class ChatAdapter {
 
         // Add ImgView
 
-        if(!TextUtils.isEmpty(img)) {
+        if(bitmap != null) {
             ImageView imgView = new ImageView(context);
-            imgView.setMaxHeight(convertToDP(10));
             imgView.setImageBitmap(bitmap);
             imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             newChat.addView(imgView);
+            imgView.getLayoutParams().height = 500;
         }
+
+//        if(db){
+//            ImageView imgView = new ImageView(context);
+//            imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//            newChat.addView(imgView);
+//            imgView.getLayoutParams().height = 500;
+//
+//            Glide.with(context).load(routes.imgChat + img)
+//                    .thumbnail(Glide.with(context).load(R.drawable.ic_broken_image))
+//                    .into(imgView);
+//        }
 
         // Add Layout Chat
 
@@ -83,13 +108,13 @@ public class ChatAdapter {
         // Add TextView Time
 
         TextView textViewTime = new TextView(context);
-        textViewTime.setText(getTime());
+        textViewTime.setText(time);
         textViewTime.setGravity(gravity);
         textViewTime.setTextColor(Color.GRAY);
         textViewTime.setTextSize(12);
         newContainer.addView(textViewTime);
 
-        root.addView(newChat);
+        //root.addView(newChat);
     }
 
     public int convertToDP(int val){
@@ -101,8 +126,5 @@ public class ChatAdapter {
         return sdf.format(new Date());
     }
 
-    public static String getTime(){
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        return sdf.format(new Date());
-    }
+
 }

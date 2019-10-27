@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         cardConsult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(ChatListActivity.class);
+                openActivity(ChatActivity.class);
             }
         });
 

@@ -42,6 +42,18 @@ public class Utils {
         return vibrantLightColorList[idx];
     }
 
+    public static String FormatTime(String s) {
+        String newString = "";
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(s);
+            newString = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return newString;
+    }
+
     public static String DateToTimeFormat(String oldstringDate){
         PrettyTime p = new PrettyTime(new Locale(getCountry()));
         String isTime = null;
