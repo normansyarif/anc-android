@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -47,16 +48,50 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
 
         token = Preferences.getInstance().getToken();
-        if(!TextUtils.isEmpty(token)){
-            Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
-            startActivity(intent);
-            finish();
+
+
+        if(!TextUtils.isEmpty(token)) {
+            HashMap<String, String> user = new HashMap<>();
+            user.put("token", token);
+            progress.show();
+
+            api.postDataVolley(user, routes.checkLogin, LoginActivity.this, new VolleyResponseListener() {
+
+                @Override
+                public void onResponse(String response) {
+                    progress.dismiss();
+
+                    try {
+                        JSONObject result = new JSONObject(response);
+                        String status = result.getString("status");
+                        if (status.equals("1")) {
+                            Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        api.handleError(e + response, LoginActivity.this);
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progress.dismiss();
+                    api.handleError(error.toString(), LoginActivity.this);
+                }
+
+            });
+
         }
     }
 
     public void initLoading(){
         progress = new ProgressDialog(this);
         progress.setMessage("Loading...");
+        progress.setCanceledOnTouchOutside(false);
     }
 
     public void loginBtnClicked(View v) {

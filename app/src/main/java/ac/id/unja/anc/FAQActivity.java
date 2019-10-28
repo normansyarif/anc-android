@@ -54,7 +54,7 @@ public class FAQActivity extends AppCompatActivity implements SwipeRefreshLayout
 
     // Pagination variables
     private int pageNumber = 1;
-    private final int PER_PAGE = 9;
+    private final int PER_PAGE = 20;
     private boolean isLoading = true;
     private int pastVisibleItems, visibleItemCount, totalItemCount, previousTotal = 0;
 

@@ -14,8 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ForumItemActivity"
+        <activity android:name=".WebviewActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ForumItemActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PregnancyPeriodActivity"
             android:theme="@style/SplashTheme" />

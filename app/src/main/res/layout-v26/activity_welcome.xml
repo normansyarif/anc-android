@@ -93,7 +93,7 @@
                 android:textStyle="bold|italic"
                 android:textSize="20sp"
                 android:layout_gravity="center_horizontal"
-                android:text="Antenatal Care"
+                android:text="HER Personal ANC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -102,12 +102,37 @@
                 android:layout_gravity="end"
                 android:textColor="#000"
                 android:padding="20dp"
-                android:text="Antenatal care (ANC) adalah pengawasan sebelum persalinan, terutama ditunjukan pada pertumbuhan dan perkembangan janin dalam rahim. Antenatal care juga merupakan cara penting untuk memonitoring dan mendukung kesehatan ibu hamil, mendeteksi ibu dengan kehamilan normal,  mengoptimalkan kesehatan mental dan fisik ibu hamil, sehingga mampu melindungi proses kehamilan, persalinan, setelah persalinan, penanganan perdarahan setelah keguguran dan pelayanan KB setelah persalinan, serta komplikasi yang terkait dengan kehamilan, persalinan, nifas dan KB setelah persalinan."
+                android:text="Aplikasi ini dikembangkan dengan tujuan utama membantu ibu-ibu hamil untuk memahami kondisi kehamilannya, sistem ini memudahkan para ibu hamil untuk memantau kemajuan kehamilan sesuai dengan usia kandungan nya masing-masing, dan dapat menjadi “diary” pribadi karena menampilkan data di personal gadget masing-masing sesuai dengan kemajuan usia kehamilan. Aplikasi ini juga berisi banyak data informasi seputar kehamilan yang dapat membantu ibu mendeteksi secara dini apabila ada hal-hal yang tidak seharusnya mereka alami di usia kandungannya tersebut.  Pengetahuan mengenai gizi ibu hamil, senam hamil yang aman dan contoh pengaturan gizi juga ada disini.\nSelamat menikmati layanan aplikasi ini, semoga bermanfaat."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <LinearLayout
-                android:paddingBottom="50dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="20dp"
+                android:weightSum="1"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/bapak"
+                    android:layout_weight="0.4"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"/>
+
+                <TextView
+                    android:textColor="#000"
+                    android:layout_marginLeft="5dp"
+                    android:text="Aplikasi ini dikembangkan o0eh Dr dr Herlambang    SpOG KFM sebagai ketua tim dan beliau biasa dikenal dengan panggilan “HER”"
+                    android:layout_weight="0.6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:orientation="vertical"
@@ -143,6 +168,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginBottom="10dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginBottom="50dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:text="Anggota tim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#000"
+                    android:text="1. Dr Jefri Marzal M. Sc\n2. dr Amelia Dwi Fitri, M.Med.Ed\n3. dr Erny Kusdiyah Ariyanto M.Kes\n4. dr A. Syauqy, M. Biomed\n5. dr Anggelia Puspasari, M.Biomed\n6. Norman Syarif\n7. Mori Setiawan\n8. Dian Zuhroh, SE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 

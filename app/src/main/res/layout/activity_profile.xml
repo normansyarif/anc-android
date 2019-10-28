@@ -156,41 +156,42 @@
 
 
         <LinearLayout
-            android:padding="10dp"
-            android:weightSum="1"
-            android:orientation="horizontal"
+            android:id="@+id/hamilContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:weightSum="1">
 
             <LinearLayout
-                android:layout_weight="0.15"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="0.15">
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_pregnant_2"/>
+                    android:src="@drawable/ic_pregnant_2" />
 
             </LinearLayout>
 
 
             <LinearLayout
-                android:layout_weight="0.85"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="0.85">
 
                 <EditText
                     android:id="@+id/pregnant_date"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:paddingTop="3dp"
-                    android:background="@null"
-                    android:textColor="#000"
-                    android:textSize="16sp"
-                    android:hint="Usia Kehamilan (minggu)"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:hint="Usia Kehamilan (minggu)"
+                    android:paddingTop="3dp"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 

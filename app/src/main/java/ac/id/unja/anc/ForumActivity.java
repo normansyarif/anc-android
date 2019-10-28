@@ -55,7 +55,7 @@ public class ForumActivity extends AppCompatActivity implements SwipeRefreshLayo
 
     // Pagination variables
     private int pageNumber = 1;
-    private final int PER_PAGE = 9;
+    private final int PER_PAGE = 10;
     private boolean isLoading = true;
     private int pastVisibleItems, visibleItemCount, totalItemCount, previousTotal = 0;
 
@@ -161,14 +161,7 @@ public class ForumActivity extends AppCompatActivity implements SwipeRefreshLayo
         adapter.setOnItemClickListener(new ForumAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-//
-                  Forum article = allArticles.get(position);
-
-//                intent.putExtra("url", article.getLink());
-//                intent.putExtra("title", article.getTitle().getRendered());
-//                intent.putExtra("author", article.getEmbedded().getAuthor().get(0).getName());
-//                intent.putExtra("content", article.getContent().getRendered());
-//
+                Forum article = allArticles.get(position);
                 Intent intent = new Intent(ForumActivity.this, ForumItemActivity.class);
                 intent.putExtra("id", article.getId().toString());
                 startActivity(intent);

@@ -1,13 +1,21 @@
 package ac.id.unja.anc;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +50,14 @@ public class ForumItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_item);
+
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
+        toolbar.setElevation(10);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Forum");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         setData();
         initLoading();
         btnListener();
@@ -98,7 +114,7 @@ public class ForumItemActivity extends AppCompatActivity {
 
                     ImageView img = findViewById(R.id.img);
                     Glide.with(ForumItemActivity.this).load(routes.imgProfile + token)
-                            .thumbnail(Glide.with(ForumItemActivity.this).load(R.drawable.ic_broken_image))
+                            .thumbnail(Glide.with(ForumItemActivity.this).load(R.drawable.ic_person_round))
                             .into(img);
 
                     String responses = result.getString("responses");
@@ -135,7 +151,7 @@ public class ForumItemActivity extends AppCompatActivity {
     }
 
     public void btnListener(){
-        Button btnTanggapan = findViewById(R.id.btnTanggapan);
+        ImageButton btnTanggapan = findViewById(R.id.btnTanggapan);
         btnTanggapan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -184,6 +200,15 @@ public class ForumItemActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

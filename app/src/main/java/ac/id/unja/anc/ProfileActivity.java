@@ -75,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
         profile = findViewById(R.id.imageView1);
 
         Glide.with(this).load(routes.imgProfile + token)
-                .thumbnail(Glide.with(this).load(R.drawable.ic_broken_image))
+                .thumbnail(Glide.with(this).load(R.drawable.ic_person_round))
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(profile);
@@ -95,6 +95,9 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
         String tipe = user.getString("tipe", "0");
         if(tipe.equals("1")) {
             edittext2.setText(String.valueOf(dateToWeek(user.getString("awal_hamil", null))));
+        } else {
+            LinearLayout containerHamil = findViewById(R.id.hamilContainer);
+            containerHamil.setVisibility(View.INVISIBLE);
         }
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -135,6 +138,7 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
     public void initLoading(){
         progress = new ProgressDialog(this);
         progress.setMessage("Loading...");
+        progress.setCanceledOnTouchOutside(false);
     }
 
     private void updateLabel() {

@@ -1,6 +1,7 @@
 package ac.id.unja.anc;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class PregnancyPeriodActivity extends AppCompatActivity implements Number
     private VolleyAPI api = new VolleyAPI();
     private Routes routes = new Routes();
     HashMap<String, String> user;
+    ProgressDialog progress;
 
     Button openDialog;
     int periode = 0;
@@ -38,6 +40,8 @@ public class PregnancyPeriodActivity extends AppCompatActivity implements Number
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pregnancy_period);
 
+        initLoading();
+
         user = (HashMap<String, String>) getIntent().getSerializableExtra("user");
         openDialog = findViewById(R.id.open_dialog);
         openDialog.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +50,12 @@ public class PregnancyPeriodActivity extends AppCompatActivity implements Number
                 show();
             }
         });
+    }
+
+    public void initLoading(){
+        progress = new ProgressDialog(this);
+        progress.setMessage("Loading...");
+        progress.setCanceledOnTouchOutside(false);
     }
 
     @Override
@@ -84,6 +94,7 @@ public class PregnancyPeriodActivity extends AppCompatActivity implements Number
     }
 
     public void mulaiBtnClicked(View v) {
+        progress.show();
         user.put("awal_hamil", weekToDate(periode));
 
         api.postDataVolley(user, routes.register, PregnancyPeriodActivity.this, new VolleyResponseListener() {
@@ -91,11 +102,13 @@ public class PregnancyPeriodActivity extends AppCompatActivity implements Number
             @Override
             public void onResponse(String response) {
                 responseHandler(response);
+                progress.dismiss();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 api.handleError(error.toString(), PregnancyPeriodActivity.this);
+                progress.dismiss();
             }
 
         });

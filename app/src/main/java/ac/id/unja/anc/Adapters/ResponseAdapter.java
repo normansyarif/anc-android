@@ -44,7 +44,7 @@ public class ResponseAdapter extends RecyclerView.Adapter<ResponseAdapter.Respon
 
         Context context = holder.imageView.getContext();
         Glide.with(context).load(routes.imgProfile + dataList.get(position).getId())
-                .thumbnail(Glide.with(context).load(R.drawable.ic_broken_image))
+                .thumbnail(Glide.with(context).load(R.drawable.ic_person_round))
                 .into(holder.imageView);
     }
 

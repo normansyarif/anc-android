@@ -1,5 +1,6 @@
 package ac.id.unja.anc;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,16 +20,27 @@ import ac.id.unja.anc.Volley.Routes;
 import ac.id.unja.anc.Volley.VolleyAPI;
 import ac.id.unja.anc.Volley.VolleyResponseListener;
 
+import static ac.id.unja.anc.Utils.weekToDate;
+
 public class UserTypeActivity extends AppCompatActivity {
     private VolleyAPI api = new VolleyAPI();
     private Routes routes = new Routes();
     HashMap<String, String> user;
+    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_type);
         user = (HashMap<String, String>) getIntent().getSerializableExtra("user");
+
+        initLoading();
+    }
+
+    public void initLoading(){
+        progress = new ProgressDialog(this);
+        progress.setMessage("Loading...");
+        progress.setCanceledOnTouchOutside(false);
     }
 
     public void onIbuClicked(View v) {
@@ -41,18 +53,22 @@ public class UserTypeActivity extends AppCompatActivity {
     }
 
     public void onMahasiswaClicked(View v) {
+        progress.show();
         user.put("tipe", "2");
+        user.put("awal_hamil", weekToDate(0));
 
         api.postDataVolley(user, routes.register, UserTypeActivity.this, new VolleyResponseListener() {
 
             @Override
             public void onResponse(String response) {
                 responseHandler(response);
+                progress.dismiss();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 api.handleError(error.toString(), UserTypeActivity.this);
+                progress.dismiss();
             }
 
         });

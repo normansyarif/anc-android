@@ -67,6 +67,7 @@ public class NewForum extends AppCompatActivity {
     public void initLoading(){
         progress = new ProgressDialog(this);
         progress.setMessage("Loading...");
+        progress.setCanceledOnTouchOutside(false);
     }
 
     @Override

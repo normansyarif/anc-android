@@ -1,6 +1,7 @@
 package ac.id.unja.anc;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,14 +31,6 @@ public class SerbaSerbiActivity extends AppCompatActivity {
 
     List<String> listId = new ArrayList<>();
     List<String> listArray = new ArrayList<>();
-//    String[] listArray={"Merencanakan Kehamilan",
-//            "Saat yang Baik untuk Hamil",
-//            "Persiapan Kehamilan",
-//            "Tanda-tanda Kehamilan",
-//            "Keluhan yang Sering Timbul Selama Hamil dan Cara Mengatasi",
-//            "Catatan Penting saat Hamil",
-//            "Panduan Pergerakan Senam Hamil",
-//            "Video USG"};
 
     ListView listview;
 
@@ -57,11 +50,17 @@ public class SerbaSerbiActivity extends AppCompatActivity {
                         JSONObject data = result.getJSONObject(i);
                         String id = data.getString("id");
                         String title = data.getString("title");
+                        String mhs = data.getString("mhs");
+
+                        SharedPreferences user = Preferences.getInstance().getUser();
+                        String tipe = user.getString("tipe", null);
+                        if(mhs.equals("1") && tipe.equals("1")) continue;
 
                         listId.add(id);
                         listArray.add(title);
-                        setList();
                     }
+
+                    setList();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -85,12 +84,10 @@ public class SerbaSerbiActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Toast.makeText(SerbaSerbiActivity.this, "ID : " + listId.get(position), Toast.LENGTH_SHORT).show();
-
-//                Intent intent = new Intent(SerbaSerbiActivity.this, LocalWebviewActivity.class);
-//                intent.putExtra("fileContent",  fileContent);
-//                startActivity(intent);
+                String url = "http://192.168.100.147/webview/serba/" + listId.get(position);
+                Intent intent = new Intent(SerbaSerbiActivity.this, WebviewActivity.class);
+                intent.putExtra("url",  url);
+                startActivity(intent);
 
             }
         });

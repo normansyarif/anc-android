@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         token = Preferences.getInstance().getToken();
         Glide.with(this).load(routes.imgProfile + token)
-                .thumbnail(Glide.with(this).load(R.drawable.ic_broken_image))
+                .thumbnail(Glide.with(this).load(R.drawable.ic_person_round))
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(imageView1);
@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
         if(tipe.equals("1")){
             usiaHamil = dateToWeek(user.getString("awal_hamil", null));
             tvUsia.setText("Usia kehamilan " + usiaHamil + " minggu");
+        }else if(tipe.equals("2")){
+            tvUsia.setText("Mahasiswa");
         }
     }
 

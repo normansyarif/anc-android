@@ -29,3 +29,33 @@ ul, ol {
 .bg-green  { background-color: #4CAF50 !important; }
 .bg-red    { background-color: #EF5350 !important; }
 .bg-yellow { background-color: #F9A825 !important; }
+
+.miku h6 {
+	color: #03a9f4!important;
+	font-weight: 700!important;
+}
+
+.miku .alert {
+	text-align: justify!important;
+	color: #02587f;
+    background-color: #cdeefd;
+    border-color: #b8e7fc;
+}
+
+.miku .yellow {
+	color: #F57F17!important;
+	margin-bottom: 0!important;
+}
+
+.miku table {
+	border-collapse: collapse;
+}
+
+.miku table, .miku th, .miku td {
+	padding: 3px;
+	border: 1px solid #02587f;
+}
+
+.miku img {
+	width: 100%;
+}

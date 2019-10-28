@@ -111,7 +111,7 @@
 
                 <TextView
                     android:paddingTop="5dp"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="15dp"
                     android:id="@+id/konten"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -157,6 +157,40 @@
                     android:layout_margin="10dp"
                     android:background="@color/lightgray" />
 
+                <LinearLayout
+                    android:weightSum="1"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:layout_marginRight="5dp"
+                        android:textSize="15sp"
+                        android:id="@+id/tanggapan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.9"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:hint="Tulis Komentar"
+                        android:inputType="textMultiLine" />
+
+                    <ImageButton
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:id="@+id/btnTanggapan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:background="#fff"
+                        android:src="@drawable/ic_send_forum"
+                        android:textColor="#FFF" />
+                </LinearLayout>
+
                 <!--Second container-->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -167,10 +201,11 @@
 
                     <!--Should be the number of responses-->
                     <TextView
+                        android:paddingBottom="5dp"
                         android:id="@+id/response_count"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:gravity="end"
+                        android:layout_height="wrap_content"
                         android:paddingRight="15dp"
                         android:text="30 tanggapan"
                         android:textSize="13sp"
@@ -178,33 +213,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/tanggapan"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:gravity="start|top"
-                        android:hint="Tulis Komentar"
-                        android:inputType="textMultiLine" />
-
-                    <Button
-                        android:id="@+id/btnTanggapan"
-                        style="@style/Widget.AppCompat.Button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:background="#009988"
-                        android:text="Kirim"
-                        android:textColor="#FFF" />
-                </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"

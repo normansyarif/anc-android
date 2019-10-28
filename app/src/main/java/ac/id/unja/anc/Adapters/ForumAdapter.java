@@ -91,7 +91,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.MyViewHolder
 
         Context context = holder.imageView.getContext();
         Glide.with(context).load(routes.imgProfile + model.getToken())
-                .thumbnail(Glide.with(context).load(R.drawable.ic_broken_image))
+                .thumbnail(Glide.with(context).load(R.drawable.ic_person_round))
                 .into(holder.imageView);
     }
 
