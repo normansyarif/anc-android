@@ -1,5 +1,6 @@
 package ac.id.unja.anc;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -43,6 +44,7 @@ public class ChatActivity extends AppCompatActivity {
     private ChatItemAdapter adapter;
     private ArrayList<Chat> arrayList;
     ImageButton btnSend;
+    ProgressDialog progress;
     ProgressBar progressBar;
     TextView textViewMsg;
     ChatAdapter chatAdapter;
@@ -69,6 +71,13 @@ public class ChatActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(nama);
         sendMsg();
         initImgPreview();
+        initLoading();
+    }
+
+    public void initLoading(){
+        progress = new ProgressDialog(this);
+        progress.setMessage("Loading...");
+        progress.setCanceledOnTouchOutside(false);
     }
 
     @Override
@@ -160,10 +169,12 @@ public class ChatActivity extends AppCompatActivity {
 
 
     public void setMsg(){
+        progress.show();
         api.getDataVolley(routes.chats + token, ChatActivity.this, new VolleyResponseListener() {
 
             @Override
             public void onResponse(String response) {
+                progress.dismiss();
                 try {
                     arrayList = new ArrayList<>();
                     adapter = new ChatItemAdapter(arrayList, ChatActivity.this);
@@ -193,6 +204,7 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 api.handleError(error.toString(), ChatActivity.this);
             }
 
