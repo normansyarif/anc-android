@@ -108,7 +108,9 @@ public class Utils {
 
     public static long dateToWeek(String sDate) {
         long diff = getDateDiff(sDate);
-        return diff/7;
+        long countDiff = diff/7;
+        if(countDiff > 37) return 37;
+        else return countDiff;
     }
 
     public static String weekToDate(int week) {

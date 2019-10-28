@@ -40,6 +40,7 @@ import ac.id.unja.anc.Volley.VolleyResponseListener;
 public class ForumItemActivity extends AppCompatActivity {
     private VolleyAPI api = new VolleyAPI();
     private Routes routes = new Routes();
+    ImageView foto1, foto2, foto3;
     ProgressDialog progress;
     String id, token;
     private ResponseAdapter adapter;
@@ -58,25 +59,58 @@ public class ForumItemActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        setData();
+        id = getIntent().getStringExtra("id");
+
+        setImgListener();
         initLoading();
+        setData();
         btnListener();
+    }
+
+
+    public void setImgListener(){
+        foto1 = findViewById(R.id.foto1);
+        foto2 = findViewById(R.id.foto2);
+        foto3 = findViewById(R.id.foto3);
+
+        foto1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ForumItemActivity.this, id + "_1", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        foto2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ForumItemActivity.this, id + "_2", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        foto3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ForumItemActivity.this, id + "_3", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void initLoading(){
         progress = new ProgressDialog(this);
         progress.setMessage("Loading...");
+        progress.setCanceledOnTouchOutside(false);
     }
 
     public void setData(){
         token = Preferences.getInstance().getToken();
         arrayList = new ArrayList<>();
 
-        id = getIntent().getStringExtra("id");
+        progress.show();
         api.getDataVolley(routes.forum + id, ForumItemActivity.this, new VolleyResponseListener() {
 
             @Override
             public void onResponse(String response) {
+                progress.dismiss();
                 try {
                     JSONObject result = new JSONObject(response);
                     String id = result.getString("id");
@@ -144,6 +178,7 @@ public class ForumItemActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 api.handleError(error.toString(), ForumItemActivity.this);
             }
         });

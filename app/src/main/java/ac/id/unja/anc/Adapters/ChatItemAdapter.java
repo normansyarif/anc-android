@@ -92,6 +92,13 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
             time = itemView.findViewById(R.id.time);
             status = itemView.findViewById(R.id.status);
             imageView = itemView.findViewById(R.id.imageView);
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(imageView.getContext(), id.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

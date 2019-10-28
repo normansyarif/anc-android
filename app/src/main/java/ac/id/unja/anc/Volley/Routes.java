@@ -1,9 +1,10 @@
 package ac.id.unja.anc.Volley;
 
 public class Routes {
-    public String base_URL, checkLogin, login, register, imgProfile, editProfile, serba;
+    public String base_URL;
+    public String checkLogin, login, register, imgProfile, editProfile, serba;
     public String forum, newForum, newResponse, imgForum;
-    public String newChat, imgChat, chats;
+    public String getId, newChat, imgChat, chats;
 
     public Routes(){
         this.base_URL  = "http://192.168.100.147/api";
@@ -20,5 +21,6 @@ public class Routes {
         this.newChat = base_URL + "/newChat";
         this.chats = base_URL + "/chats/";
         this.imgChat = base_URL + "/imgChat/";
+        this.getId = base_URL + "/getId/";
     }
 }

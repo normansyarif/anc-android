@@ -10,14 +10,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.github.nkzawa.emitter.Emitter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +37,7 @@ import ac.id.unja.anc.Adapters.ChatItemAdapter;
 import ac.id.unja.anc.Models.Chat;
 import ac.id.unja.anc.Volley.Preferences;
 import ac.id.unja.anc.Volley.Routes;
+import ac.id.unja.anc.Volley.SocketInit;
 import ac.id.unja.anc.Volley.VolleyAPI;
 import ac.id.unja.anc.Volley.VolleyResponseListener;
 
@@ -43,6 +47,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ChatItemAdapter adapter;
     private ArrayList<Chat> arrayList;
+    String thisID;
     ImageButton btnSend;
     ProgressDialog progress;
     ProgressBar progressBar;
@@ -55,12 +60,14 @@ public class ChatActivity extends AppCompatActivity {
     private Bitmap bitmap = null;
     private Uri filePath;
     private ImageView imagePreview;
+    private SocketInit socketInit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         chatAdapter = new ChatAdapter(this, this);
+        this.socketInit = new SocketInit();
 
         token = Preferences.getInstance().getToken();
         btnSend = findViewById(R.id.btnSend);
@@ -72,6 +79,7 @@ public class ChatActivity extends AppCompatActivity {
         sendMsg();
         initImgPreview();
         initLoading();
+        socketListener();
     }
 
     public void initLoading(){
@@ -84,7 +92,44 @@ public class ChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setMsg();
+        getId();
     }
+
+    // ---------- SCROLL TO BOTTOM
+
+
+    public void scrollBottom(){
+        final ScrollView scrollChat = findViewById(R.id.scrollChat);
+        scrollChat.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollChat.fullScroll(View.FOCUS_DOWN);
+            }
+        });
+    }
+
+    // ---------- Get ID ONLY
+
+
+    public void getId(){
+        api.getDataVolley(routes.getId + token, ChatActivity.this, new VolleyResponseListener() {
+
+            @Override
+            public void onResponse(String response) {
+                thisID = response;
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                api.handleError(error.toString(), ChatActivity.this);
+            }
+
+        });
+    }
+
+
+    // ---------- SEND MSG
+
 
     public void sendMsg(){
         ImageView btnAttach = findViewById(R.id.attach);
@@ -116,6 +161,7 @@ public class ChatActivity extends AppCompatActivity {
                         try {
                             JSONObject result = new JSONObject(response);
                             String id = result.getString("id");
+                            String sender_id = result.getString("sender_id");
                             String status = result.getString("status");
 
                             if(status.equals("0")) {
@@ -123,7 +169,10 @@ public class ChatActivity extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(ChatActivity.this, "Terjadi Kesalahan. Coba lagi nanti.", Toast.LENGTH_SHORT).show();
                             } else {
+                                socketInit.mSocket.emit("messagedetection", id, sender_id, "1", msg, getTime(), (sendImg) ? "1" : "0");
+
                                 arrayList.add(new Chat(id, "0", msg, getTime(), "Terkirim", (sendImg) ? "1" : "0"));
+
                                 sendImg = false;
                                 bitmap = null;
 
@@ -196,6 +245,7 @@ public class ChatActivity extends AppCompatActivity {
                     recyclerView = findViewById(R.id.recyclerView);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setAdapter(adapter);
+                    scrollBottom();
                 } catch (JSONException e) {
                     e.printStackTrace();
                     api.handleError(e + response, ChatActivity.this);
@@ -251,5 +301,48 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    // ---- Listener socket message received
 
+    public void socketListener(){
+        Emitter.Listener onNewMessage = new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                ChatActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // DO SOMETHING AFTER RECEIVED
+
+                        JSONObject data = (JSONObject) args[0];
+                        String id, sender_id, recipient, newMsg, time, img;
+                        try {
+                            id = data.getString("id");
+                            sender_id = data.getString("sender_id");
+                            recipient = data.getString("recipient_id");
+                            newMsg = data.getString("msg");
+                            time = data.getString("time");
+                            img = data.getString("img");
+
+                            if(recipient.equals(thisID)){
+                                arrayList.add(new Chat(id, sender_id, newMsg, time, "", img));
+                                adapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            Log.e("Received socket error", e.toString());
+                        }
+                    }
+                });
+            }
+        };
+
+        socketInit.mSocket.on("newmessage", onNewMessage);
+    }
+
+    // ---- Destroy
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        socketInit.mSocket.disconnect();
+    }
 }

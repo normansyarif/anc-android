@@ -1,5 +1,6 @@
 package ac.id.unja.anc;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import ac.id.unja.anc.Volley.VolleyResponseListener;
 public class SerbaSerbiActivity extends AppCompatActivity {
     private VolleyAPI api = new VolleyAPI();
     private Routes routes = new Routes();
+    ProgressDialog progress;
 
     List<String> listId = new ArrayList<>();
     List<String> listArray = new ArrayList<>();
@@ -39,10 +41,14 @@ public class SerbaSerbiActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serba_serbi);
 
+        initLoading();
+        progress.show();
+
         api.getDataVolley(routes.serba, SerbaSerbiActivity.this, new VolleyResponseListener() {
 
             @Override
             public void onResponse(String response) {
+                progress.dismiss();
                 try {
                     JSONArray result = new JSONArray(response);
 
@@ -70,10 +76,17 @@ public class SerbaSerbiActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                progress.dismiss();
                 api.handleError(error.toString(), SerbaSerbiActivity.this);
             }
 
         });
+    }
+
+    public void initLoading(){
+        progress = new ProgressDialog(this);
+        progress.setMessage("Loading...");
+        progress.setCanceledOnTouchOutside(false);
     }
 
     public void setList(){
