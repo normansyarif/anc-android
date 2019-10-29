@@ -124,7 +124,7 @@
                 <TextView
                     android:textColor="#000"
                     android:layout_marginLeft="5dp"
-                    android:text="Aplikasi ini dikembangkan o0eh Dr dr Herlambang    SpOG KFM sebagai ketua tim dan beliau biasa dikenal dengan panggilan “HER”"
+                    android:text="Aplikasi ini dikembangkan oleh Dr dr Herlambang    SpOG KFM sebagai ketua tim dan beliau biasa dikenal dengan panggilan “HER”"
                     android:layout_weight="0.6"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />

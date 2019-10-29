@@ -1,5 +1,6 @@
 package ac.id.unja.anc;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,8 +8,11 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -41,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.et_username);
         etPass = findViewById(R.id.et_pass);
         initLoading();
+        initShowPassword();
     }
 
     @Override
@@ -94,47 +99,77 @@ public class LoginActivity extends AppCompatActivity {
         progress.setCanceledOnTouchOutside(false);
     }
 
-    public void loginBtnClicked(View v) {
-        progress.show();
-        HashMap<String, String> user = new HashMap<>();
-        user.put("username", etUsername.getText().toString());
-        user.put("password", etPass.getText().toString());
-
-        api.postDataVolley(user, routes.login, LoginActivity.this, new VolleyResponseListener() {
+    @SuppressLint("ClickableViewAccessibility")
+    private void initShowPassword() {
+        etPass.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
-            public void onResponse(String response) {
-                progress.dismiss();
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
 
-                try {
-                    JSONObject result = new JSONObject(response);
-                    String token = result.getString("token");
-
-                    if(token.equals("0")) {
-                        Toast.makeText(LoginActivity.this, "Username atau Password tidak ditemukan", Toast.LENGTH_SHORT).show();
-                    } else {
-                        JSONObject user = new JSONObject(result.getString("user"));
-                        Preferences.getInstance().writeAuth("token", token);
-                        Preferences.getInstance().setUser(user);
-
-                        Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
-                        startActivity(intent);
-                        finish();
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (etPass.getRight() - etPass.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        int inputType = etPass.getInputType();
+                        if(inputType == 1) {
+                            etPass.setInputType(129);
+                        }else{
+                            etPass.setInputType(1);
+                        }
+                        return true;
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    api.handleError(e + response, LoginActivity.this);
                 }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progress.dismiss();
-                api.handleError(error.toString(), LoginActivity.this);
+                return false;
             }
 
         });
+
+    }
+
+    public void loginBtnClicked(View v) {
+        if(!etUsername.getText().toString().equals("") && !etPass.getText().toString().equals("")) {
+            progress.show();
+            HashMap<String, String> user = new HashMap<>();
+            user.put("username", etUsername.getText().toString());
+            user.put("password", etPass.getText().toString());
+
+            api.postDataVolley(user, routes.login, LoginActivity.this, new VolleyResponseListener() {
+
+                @Override
+                public void onResponse(String response) {
+                    progress.dismiss();
+
+                    try {
+                        JSONObject result = new JSONObject(response);
+                        String token = result.getString("token");
+
+                        if(token.equals("0")) {
+                            Toast.makeText(LoginActivity.this, "Username atau Password tidak ditemukan", Toast.LENGTH_SHORT).show();
+                        } else {
+                            JSONObject user = new JSONObject(result.getString("user"));
+                            Preferences.getInstance().writeAuth("token", token);
+                            Preferences.getInstance().setUser(user);
+
+                            Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        api.handleError(e + response, LoginActivity.this);
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progress.dismiss();
+                    api.handleError(error.toString(), LoginActivity.this);
+                }
+
+            });
+        }else{
+            Toast.makeText(this, "Mohon isi username dan password", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void registerLinkClicked(View v) {

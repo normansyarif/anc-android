@@ -134,7 +134,7 @@ public class ForumActivity extends AppCompatActivity implements SwipeRefreshLayo
                         showNotFoundMessage(
                                 R.drawable.no_result,
                                 "Ups!",
-                                "Kami tidak dapat menemukan yang Anda cari :(");
+                                "Tidak ada apa-apa disini :(");
                     }
 
                 }else{

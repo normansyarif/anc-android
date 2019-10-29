@@ -46,7 +46,7 @@ public class InfoActivity extends AppCompatActivity implements NumberPicker.OnVa
         String tipe = user.getString("tipe", "0");
         if(!tipe.equals("1")){
             usiaHamil = 0;
-        }else if(tipe.equals("2")){
+        }else{
             usiaHamil = dateToWeek(user.getString("awal_hamil", null));
         }
 
