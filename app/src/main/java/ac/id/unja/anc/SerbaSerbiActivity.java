@@ -97,7 +97,7 @@ public class SerbaSerbiActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String url = "http://192.168.100.147/webview/serba/" + listId.get(position);
+                String url = Routes.baseUrl + "/webview/serba/" + listId.get(position);
                 Intent intent = new Intent(SerbaSerbiActivity.this, WebviewActivity.class);
                 intent.putExtra("url",  url);
                 startActivity(intent);

@@ -41,14 +41,18 @@ public class RegisterActivity extends AppCompatActivity {
         String pass = etPass.getText().toString();
         String pass2 = etPass2.getText().toString();
 
-        HashMap<String, String> user = new HashMap<>();
-        user.put("name", name);
-        user.put("username", username);
-        user.put("password", pass);
+        if(!pass.equals(pass2)) {
+            Toast.makeText(this, "Password tidak cocok. Mohon coba lagi.", Toast.LENGTH_SHORT).show();
+        }else{
+            HashMap<String, String> user = new HashMap<>();
+            user.put("name", name);
+            user.put("username", username);
+            user.put("password", pass);
 
-        Intent intent = new Intent(RegisterActivity.this, UserTypeActivity.class);
-        intent.putExtra("user", user);
-        startActivity(intent);
+            Intent intent = new Intent(RegisterActivity.this, UserTypeActivity.class);
+            intent.putExtra("user", user);
+            startActivity(intent);
+        }
     }
 
 }

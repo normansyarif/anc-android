@@ -76,21 +76,30 @@ public class ForumItemActivity extends AppCompatActivity {
         foto1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ForumItemActivity.this, id + "_1", Toast.LENGTH_SHORT).show();
+                String url = Routes.baseUrl + "/webview/image?url=" + "/forum/" + id + "_1.png";
+                Intent intent = new Intent(ForumItemActivity.this, WebviewActivity.class);
+                intent.putExtra("url",  url);
+                startActivity(intent);
             }
         });
 
         foto2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ForumItemActivity.this, id + "_2", Toast.LENGTH_SHORT).show();
+                String url = Routes.baseUrl + "/webview/image?url=" + "/forum/" + id + "_2.png";
+                Intent intent = new Intent(ForumItemActivity.this, WebviewActivity.class);
+                intent.putExtra("url",  url);
+                startActivity(intent);
             }
         });
 
         foto3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ForumItemActivity.this, id + "_3", Toast.LENGTH_SHORT).show();
+                String url = Routes.baseUrl + "/webview/image?url=" + "/forum/" + id + "_3.png";
+                Intent intent = new Intent(ForumItemActivity.this, WebviewActivity.class);
+                intent.putExtra("url",  url);
+                startActivity(intent);
             }
         });
     }

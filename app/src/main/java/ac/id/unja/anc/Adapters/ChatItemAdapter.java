@@ -1,6 +1,7 @@
 package ac.id.unja.anc.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -19,8 +20,10 @@ import java.util.List;
 
 import ac.id.unja.anc.Models.Chat;
 import ac.id.unja.anc.R;
+import ac.id.unja.anc.SerbaSerbiActivity;
 import ac.id.unja.anc.Volley.Routes;
 import ac.id.unja.anc.Volley.VolleyAPI;
+import ac.id.unja.anc.WebviewActivity;
 
 public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyViewHolder> {
     private VolleyAPI api = new VolleyAPI();
@@ -96,7 +99,10 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.MyView
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(imageView.getContext(), id.getText().toString(), Toast.LENGTH_SHORT).show();
+                    String url = Routes.baseUrl + "/webview/image?url=" + "/api/imgChat/" + id.getText().toString();
+                    Intent intent = new Intent(imageView.getContext(), WebviewActivity.class);
+                    intent.putExtra("url",  url);
+                    imageView.getContext().startActivity(intent);
                 }
             });
         }

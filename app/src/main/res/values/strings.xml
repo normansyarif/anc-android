@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ANC</string>
+    <string name="app_name">Her ANC</string>
     <string name="signup">Belum punya akun? <u>Daftar</u>.</string>
     <string name="login">Sudah punya akun? <u>Login</u>.</string>
 </resources>

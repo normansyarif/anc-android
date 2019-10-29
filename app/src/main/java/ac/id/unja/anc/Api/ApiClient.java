@@ -9,13 +9,14 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import ac.id.unja.anc.Volley.Routes;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static final String BASE_URL = "http://192.168.100.147/";
+    private static final String BASE_URL = Routes.baseUrl + "/";
     private static Retrofit retrofit;
 
     public static Retrofit getApiClient(){

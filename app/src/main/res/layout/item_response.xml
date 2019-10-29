@@ -45,52 +45,62 @@
                     android:text="TextView"
                     android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Name"
-                    android:textColor="#4c4c4c" />
-
                 <LinearLayout
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/img"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_marginRight="3dp"
-                        android:src="@drawable/ic_date" />
+                    android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/created_at"
+                        android:id="@+id/username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="01 January 1990"
-                        android:textColor="#9e9e9e"
-                        android:textSize="11sp" />
+                        android:text="Name"
+                        android:textColor="#4c4c4c" />
+
+                    <LinearLayout
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/img"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginRight="3dp"
+                            android:src="@drawable/ic_date" />
+
+                        <TextView
+                            android:id="@+id/created_at"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="01 January 1990"
+                            android:textColor="#9e9e9e"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/response"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginTop="5dp"
+                    android:lineSpacingMultiplier="1.3"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="10dp"
+                    android:text="Respon 1"
+                    android:textColor="#757575" />
 
             </LinearLayout>
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/response"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:lineSpacingMultiplier="1.3"
-            android:paddingTop="5dp"
-            android:paddingBottom="10dp"
-            android:text="Respon 1"
-            android:textColor="#757575" />
 
         <View
             android:layout_width="match_parent"

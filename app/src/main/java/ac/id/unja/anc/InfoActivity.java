@@ -43,7 +43,14 @@ public class InfoActivity extends AppCompatActivity implements NumberPicker.OnVa
         CardView cardNutrisi = findViewById(R.id.card_nutrisi);
         CardView cardKarakteristik = findViewById(R.id.card_karakteristik);
 
-        usiaHamil = dateToWeek(user.getString("awal_hamil", null));
+        String tipe = user.getString("tipe", "0");
+        if(!tipe.equals("1")){
+            usiaHamil = 0;
+        }else if(tipe.equals("2")){
+            usiaHamil = dateToWeek(user.getString("awal_hamil", null));
+        }
+
+
         tvPeriode.setText("Usia kehamilan " + usiaHamil + " minggu");
 
         cardGizi.setOnClickListener(new View.OnClickListener() {
