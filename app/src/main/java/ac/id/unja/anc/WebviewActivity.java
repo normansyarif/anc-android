@@ -32,8 +32,8 @@ public class WebviewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        initWebview(savedInstanceState);
         initLoading();
+        initWebview(savedInstanceState);
     }
 
     public void initLoading(){
@@ -43,6 +43,7 @@ public class WebviewActivity extends AppCompatActivity {
     }
 
     private void initWebview(Bundle savedInstanceState) {
+        progress.show();
         myBrowser = findViewById(R.id.mybrowser);
         myBrowser.setWebChromeClient(new FullscreenVideoEnable());
         myBrowser.getSettings().setJavaScriptEnabled(true);
@@ -56,7 +57,7 @@ public class WebviewActivity extends AppCompatActivity {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                progress.show();
+                progress.dismiss();
             }
 
             @Override

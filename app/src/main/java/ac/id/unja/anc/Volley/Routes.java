@@ -2,7 +2,7 @@ package ac.id.unja.anc.Volley;
 
 public class Routes {
     public String base_URL;
-    public static String baseUrl = "http://192.168.43.28";
+    public static String baseUrl = "https://her-anc.com";
     public String checkLogin, login, register, imgProfile, editProfile, serba;
     public String forum, newForum, newResponse, imgForum;
     public String getId, newChat, imgChat, chats;

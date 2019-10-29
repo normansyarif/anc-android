@@ -7,7 +7,7 @@ import com.github.nkzawa.socketio.client.Socket;
 import java.net.URISyntaxException;
 
 public class SocketInit {
-    public String socket_URL = Routes.baseUrl + ":3000";
+    public String socket_URL = "https://nodejs.her-anc.com";
 
     public Socket mSocket;
 
