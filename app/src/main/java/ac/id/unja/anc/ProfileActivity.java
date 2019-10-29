@@ -89,13 +89,14 @@ public class ProfileActivity extends AppCompatActivity implements NumberPicker.O
 
         SharedPreferences user = Preferences.getInstance().getUser();
         etfullname.setText(user.getString("name", null));
-        edittext.setText(user.getString("tanggal_lahir", null));
+        edittext.setText(user.getString("tanggal_lahir", "2000-01-01"));
         profile.setImageResource(profilePicture);
 
         String tipe = user.getString("tipe", "0");
         if(tipe.equals("1")) {
             edittext2.setText(String.valueOf(dateToWeek(user.getString("awal_hamil", null))));
         } else {
+            edittext2.setText("0");
             LinearLayout containerHamil = findViewById(R.id.hamilContainer);
             containerHamil.setVisibility(View.INVISIBLE);
         }
