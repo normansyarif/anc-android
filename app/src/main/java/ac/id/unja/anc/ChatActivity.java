@@ -1,5 +1,6 @@
 package ac.id.unja.anc;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,6 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -47,6 +51,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ChatItemAdapter adapter;
     private ArrayList<Chat> arrayList;
+    WebView webView;
     String thisID;
     ImageButton btnSend;
     ProgressDialog progress;
@@ -80,6 +85,7 @@ public class ChatActivity extends AppCompatActivity {
         initImgPreview();
         initLoading();
         socketListener();
+        setWebView();
     }
 
     public void initLoading(){
@@ -169,7 +175,9 @@ public class ChatActivity extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(ChatActivity.this, "Terjadi Kesalahan. Coba lagi nanti.", Toast.LENGTH_SHORT).show();
                             } else {
-                                socketInit.mSocket.emit("messagedetection", id, sender_id, "1", msg, getTime(), (sendImg) ? "1" : "0");
+                                //socketInit.mSocket.emit("messagedetection", id, sender_id, "1", msg, getTime(), (sendImg) ? "1" : "0");
+                                String emitURL = String.format("javascript:sendFromClient('%s', '%s', '%s', '%s', '%s', '%s',)", id, sender_id, "1", msg, getTime(), (sendImg) ? "1" : "0");
+                                webView.loadUrl(emitURL);
 
                                 arrayList.add(new Chat(id, "0", msg, getTime(), "Terkirim", (sendImg) ? "1" : "0"));
 
@@ -301,7 +309,9 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+
     // ---- Listener socket message received
+
 
     public void socketListener(){
         Emitter.Listener onNewMessage = new Emitter.Listener() {
@@ -344,5 +354,54 @@ public class ChatActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         socketInit.mSocket.disconnect();
+    }
+
+
+    //  -------------- WebView Listener
+
+
+    @SuppressLint("SetJavaScriptEnabled")
+    public void setWebView(){
+        webView = findViewById(R.id.webView);
+        webView.getSettings().setLoadsImagesAutomatically(true);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);
+
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
+
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        webView.setWebChromeClient(new MyWebChromeClient());
+
+        webView.loadUrl("javascript:alert(func)");
+        webView.loadUrl("https://nodejs.her-anc.com/listener.html");
+    }
+
+    final class MyWebChromeClient extends WebChromeClient {
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+
+            String id, sender_id, recipient, newMsg, time, img;
+            try {
+                JSONObject data = new JSONObject(message);
+                id = data.getString("id");
+                sender_id = data.getString("sender_id");
+                recipient = data.getString("recipient_id");
+                newMsg = data.getString("msg");
+                time = data.getString("time");
+                img = data.getString("img");
+
+                if(recipient.equals(thisID)){
+                    arrayList.add(new Chat(id, sender_id, newMsg, time, "", img));
+                    adapter.notifyDataSetChanged();
+                }
+            } catch (JSONException e) {
+                Log.e("Received socket error", e.toString());
+            }
+
+            result.confirm();
+            return true;
+        }
     }
 }

@@ -8,6 +8,13 @@
     android:orientation="vertical"
     tools:context=".ChatActivity">
 
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.9"
+        android:visibility="gone" />
+
     <ScrollView
         android:id="@+id/scrollChat"
         android:layout_width="match_parent"
